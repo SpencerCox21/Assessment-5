@@ -226,7 +226,7 @@ module.exports = {
     },
 
 
-    getCountries: (rec, res) => {
+    getCountries: (req, res) => {
         sequelize.query(`
             select * from countries;
         `)
@@ -236,7 +236,31 @@ module.exports = {
 
 
 
-    createCity: (rec, res) => {
+    createCity: (req, res) => {
+
+        let {name, rating, countryId} = req.body
+
+
+        sequelize.query(`
+
+        select *        
+        from cities
+        join countries 
+        on countries.country_id = cities.country_id;
+
+        insert into cities (name, rating, country_id)
+        values ('${name}', ${rating}, ${countryId});
+
+        
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(err => console.log(err))
+    },
+
+
+
+
+    getCities: (req, res) => {
         sequelize.query(`
 
         `)
@@ -247,18 +271,7 @@ module.exports = {
 
 
 
-    getCities: (rec, res) => {
-        sequelize.query(`
-
-        `)
-        .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(err => console.log(err))
-    },
-
-
-
-
-    deleteCity: (rec, res) => {
+    deleteCity: (req, res) => {
         sequelize.query(`
 
         `)
